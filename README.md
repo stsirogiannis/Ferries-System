@@ -1,6 +1,6 @@
 # DS FERRIES
 
-A console-based ferry ticket booking system for the fictional ferry company DS Ferries, written in C. Built for the 2nd Mandatory Project of the "Programming Language C" course at the University of Piraeus, Dept. of Digital Systems (Winter 2023-2024).
+A console-based ferry ticket booking system for the fictional ferry company DS Ferries, written in C.
 
 ## Features
 
