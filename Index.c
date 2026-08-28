@@ -1,14 +1,13 @@
-
-//eisagogi bibliothikon
+// import libraries
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-//dilosi global metavliton
-int pelates=0; //oi sinolikoi pelates pou mporoun na eggrafoun
+// declaration of global variable
+int pelates=0; // the total number of clients who can sign up
 
 
-//dilosi sinartiseon
+// function declarations
 void user_signup(void);
 void get_new_user(void);
 int username_exists(char answer_username[20]);
@@ -23,7 +22,7 @@ void payment(int p);
 void confirmed_trips(int p);
 
 
-// dilosi domon
+// struct declarations
 struct USER{
     char name[20];
     char surname[20];
@@ -65,16 +64,16 @@ struct TRIP{
 
 int main(void) {
 
-    input_routes(); //kaleitai i sinartisi input_routes gia na ekhorithoun ta dedomena ton proorismon
+    input_routes(); // input_routes is called to assign the destination data
 
-    //ekhorisi tis timis 0 sto member 'sinolika_taksidia' kathe pelati
-    //afou den exei pragmatopoihsei kapoio taksidi akoma
+    // set the 'sinolika_taksidia' member to 0 for each client
+    // since they haven't made any trip yet
     for (int i = 0; i<30; i++)
         client_trip[i].sinolika_taksidia = 0;
 
-    while(1){ //atermon broxos mexri o user na patisei 0
+    while(1){ // infinite loop until the user presses 0
 		
-        //arxiko menou epilogis
+        // initial selection menu
         printf("*************************************\n");
         printf("*              DS FERRIES           *\n");
         printf("*************************************\n");
@@ -89,11 +88,11 @@ int main(void) {
         printf("Place your answer: ");
         scanf("%s", answer);
 
-        // elegxos orthis eisagosis
+        // check for correct input
         if(strcmp(answer, "1") == 0) {
             if(pelates<30){
-                user_signup(); //kaleitai i sinartisi user_signup()
-                get_new_user(); //kaleitai i sinartisi get_new_user()
+                user_signup(); // user_signup() is called
+                get_new_user(); // get_new_user() is called
             } 
             else{
             	system("cls");
@@ -101,12 +100,12 @@ int main(void) {
 			}
         }
         else if (strcmp(answer, "2") == 0) {
-            int p; // opou p o arithmos tou pelati pou prokeitai na sindethei
-            p = check_login();// kaleitai i sinartisi check_login() kai to p pairnei ton arithmo tou pelati
-            user_login(p); //kaleitai i sinartisi user_login() afou o hristis epivaiveothike (orisma to p, diladi o arithmos pelati)
+            int p; // p is the number of the client who is about to log in
+            p = check_login();// check_login() is called and p receives the client's number
+            user_login(p); // user_login() is called after the user is verified (argument p, i.e. the client's number)
         }
         else if (strcmp(answer, "0") == 0)
-            break; //eksodos apo to programma
+            break; // exit the program
         else{
         	system("cls");
         	printf("Invalid input. Please enter '0', '1', or '2'.\n\n");
@@ -116,14 +115,14 @@ int main(void) {
 
     return 0;
 
-}//end main
+}//return to main
 
 
 void user_signup(void){
 	
 	system("cls");
 
-    //zitountai apo ton user na eisagei ta stoixeia tou
+    // the user is asked to enter their details
     printf("\nPlease enter your credentials below:\n");
     printf("**************************************\n");
 
@@ -135,7 +134,7 @@ void user_signup(void){
     printf("Age: ");
     int answer_age;
     scanf("%d", &answer_age);
-    while(answer_age<18){ //elegxos ilikias
+    while(answer_age<18){ // age check
         printf("User must be at least 18 years old\n");
         printf("Age: ");
         scanf("%d", &answer_age);
@@ -145,7 +144,7 @@ void user_signup(void){
     long long int answer_card;
     printf("Card number (without blanks): ");
     scanf("%lld", &answer_card);
-    while(answer_card < 1000000000000000 || answer_card > 9999999999999999){ // prepei to card number na einai 16-digit
+    while(answer_card < 1000000000000000 || answer_card > 9999999999999999){ // the card number must be 16 digits
         printf("\nEnter a valid 16-digit card number: ");
         printf("Card number (without blanks): ");
         scanf("%lld", &answer_card);
@@ -154,7 +153,7 @@ void user_signup(void){
     printf("Are you a university student?(yes/no): ");
     char answer_uni[3];
     scanf("%s", answer_uni);
-    while(1) { // elegxos apantisis kai epeita ekxorisi tis katallilis timis: 0/1
+    while(1) { // check the answer and then assign the appropriate value: 0/1
         if (strcmp(answer_uni, "yes") == 0){
             user[pelates].uni_student = 1;
             break;
@@ -169,7 +168,7 @@ void user_signup(void){
         }
     }
 
-}//epistrofi sti main
+}//return to main
 
 
 void get_new_user(void){
@@ -196,11 +195,11 @@ void get_new_user(void){
     printf("Password: ");
     int i=0;
     char answer_password[8];
-    while(i != 7){ //atermon brohos mexri ta psifia tou password na einai 7
+    while(i != 7){ // infinite loop until the password length is 7
 
         scanf("%s", answer_password);
-        for (i = 0; answer_password[i] != '\0'; ++i); // metraei ta psifia tou password
-        if(i != 7){ // elegxei ta psifia tou password na einai 7
+        for (i = 0; answer_password[i] != '\0'; ++i); // counts the characters of the password
+        if(i != 7){ // checks that the password length is 7
             printf("The password must me 7 characters!\n");
             printf("Password: ");
         }
@@ -211,13 +210,13 @@ void get_new_user(void){
 
     }
 
-    pelates++; //metritis gia tous pelates, etsi oste na min kseperasoun tous 30
+    pelates++; // client counter, so as not to exceed 30
 
     printf("User created successfully\n\n");
 	system("pause");
 	system("cls");
 
-}//epistrofi sti main
+}//return to main
 
 
 int username_exists(char answer_username[20]) {
@@ -230,11 +229,11 @@ int username_exists(char answer_username[20]) {
         }
     }
     if (flag==0)
-        return 0; //den yprxei idi to username
+        return 0; // the username does not already exist
     else
-        return 1;//yparxei idi to username
+        return 1;// the username already exists
 
-}//epistrofi stin get_new_user
+}//return to get_new_user
 
 
 int check_login(void){
@@ -251,19 +250,19 @@ int check_login(void){
     printf("Password: ");
     scanf("%s", answer_password);
 
-    //elegxos eisagogis username & password
+    // check the entered username & password
     while(1) {
 
         int i, flag=0;
 
-        for (i = 0; i < 30; i++) { //ginetai prospelasi olon ton stoxeion tou struct user
+        for (i = 0; i < 30; i++) { // all elements of the user struct are accessed
             if (strcmp(answer_username, user[i].username) == 0 && strcmp(answer_password, user[i].password) == 0) {
-                flag=1; // an to flag einai 1, tote o hristis eisigage sosta stoixeia
+                flag=1; // if flag is 1, the user entered the correct details
                 break; 
             }
         }
         if (flag==1)
-            return i; // epistrefei ton arithmo tou pelati
+            return i; // returns the client's number
         else{
             printf("Invalid input. Please try again.\n");
             printf("Username: ");
@@ -274,14 +273,14 @@ int check_login(void){
 
     }
 
-}//epistrofi sti main
+}//return to main
 
 
 void user_login(int p){
 	
 	system("cls");
 
-    while(1){ //atermon brohos mexri o user na pliktrologisei 'e'
+    while(1){ // infinite loop until the user types 'e'
 		
         printf("\n*************************************\n");
         printf("*           USER DASHBOARD          *\n");
@@ -299,11 +298,11 @@ void user_login(int p){
         printf("Place your answer: ");
         scanf("%s", answer);
 
-        if (strcmp(answer, "a") == 0) //elegxos orthis eisagogis
-            view_routes(); //kaleitai i sinartisi view_routes()
+        if (strcmp(answer, "a") == 0) // check for correct input
+            view_routes(); // view_routes() is called
         else if (strcmp(answer, "b") == 0){
                 if (client_trip[p].sinolika_taksidia < 30)
-                    book_trip(p); //kaleitai i sinartisi book_trip() me orisma to p, pou einai o arithmos tou pelati
+                    book_trip(p); // book_trip() is called with argument p, the client's number
                 else{
                 	system("cls");
                 	printf("User cannot book more than 50 trips.\n");
@@ -311,16 +310,16 @@ void user_login(int p){
         }
         else if (strcmp(answer, "c") == 0){
             if(client_trip[p].sinolika_taksidia > 0){
-                int flag1 = 0; // an yparxei taksidi se katastasi "Pending"
+                int flag1 = 0; // whether there is a trip in "Pending" status
                 for (int i = 0; i < client_trip[p].sinolika_taksidia; i++){
                     if (strcmp(client_trip[p].booked_trip[i].trip_status, "PENDING") == 0)
-                        flag1 = 1; //yparxei taksidi se katastasi "Pending"
+                        flag1 = 1; // there is a trip in "Pending" status
                 }
                 if (flag1 == 1)
-                    payment(p); //kaleitai i sinartisi payment() me orisma to p, pou einai o arithmos tou pelati
+                    payment(p); // payment() is called with argument p, the client's number
                 else{
                 	system("cls");
-                	printf("You have no payments due.\n"); //den iparxoun ekkremhs pliromes
+                	printf("You have no payments due.\n"); // no pending payments
 				}
             }
             else{
@@ -330,13 +329,13 @@ void user_login(int p){
         }
         else if (strcmp(answer, "d") == 0){
             if(client_trip[p].sinolika_taksidia > 0){
-                int flag2 = 0; // an yparxei taksidi se katastasi "Confirmed"
+                int flag2 = 0; // whether there is a trip in "Confirmed" status
                 for (int i = 0; i < client_trip[p].sinolika_taksidia; i++){
                     if (strcmp(client_trip[p].booked_trip[i].trip_status, "CONFIRMED") == 0)
-                        flag2 = 1; //yparxei taksii se atastasi "Confirmed"
+                        flag2 = 1; // there is a trip in "Confirmed" status
                 }
                 if (flag2 == 1)
-                    confirmed_trips(p); //kaleitai i sinartisi confirmed_trips() me orisma to p, pou einai o arithmos tou pelati
+                    confirmed_trips(p); // confirmed_trips() is called with argument p, the client's number
                 else{
                 	system("cls");
                     printf("You have not yet confirmed trips.\n");
@@ -349,7 +348,7 @@ void user_login(int p){
         }
         else if (strcmp(answer, "e") == 0){
         	system("cls");
-            break; //epistrofi sti main
+            break; // return to main
         }
         else{
 			system("cls");
@@ -359,12 +358,12 @@ void user_login(int p){
 
     }
 
-}//epistrofi sti main
+}//return to main
 
 
 void input_routes(void){
 
-    //EKHORISI DEDOMENON
+    // ASSIGNING DATA
 
     //KOS
     strcpy(route[0].port, "Kos");
@@ -470,14 +469,14 @@ void input_routes(void){
     route[12].cabin_price = 120;
     route[12].vehicle_price = 100;
 
-}//epistrofi sti main
+}//return to main
 
 
 void view_routes(void){
 	
 	system("cls");
 		
-    //Ektiposi diathesimon diadromon
+    // print the available routes
     printf("\n***********************************************************\n");
     printf("*               AVAILABLE TRIPS FROM PIRAEUS              *\n");
     printf("***********************************************************\n\n");
@@ -495,33 +494,33 @@ void view_routes(void){
     system("pause");
 	system("cls");
 	
-}//epistrofi stin user login
+}//return to user_login
 
 
 void book_trip(int p){
 
-    int sygkekrimeno_taksidi = client_trip[p].sinolika_taksidia;//ekhorisi tou a/a tou taksidiou se mia metavliti gia logoys dieykolynsis
+    int sygkekrimeno_taksidi = client_trip[p].sinolika_taksidia;// assign the trip index to a variable for convenience
 	system("cls");
 
     while(1){
         
-        int flag1 = 0; //to flag1 tha ginei 1 an i imerominia pou eisagei o user einai sosti
+        int flag1 = 0; // flag1 becomes 1 if the date entered by the user is valid
 
-        printf("Please choose the departure date: (dd/mm/yyyy)\n");// dedomenou oti o hristis tha valei mia imerominia pou vgazei noima
+        printf("Please choose the departure date: (dd/mm/yyyy)\n");// given that the user will enter a sensible date
 
         printf("Day: ");
-        scanf("%d", &client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.dd); // ekhorisi tis imeromminias pou pliktrologise
-        printf("Month: ");                                                      // o hristis sti domi departure date, me vasi tin
-        scanf("%d", &client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.mm); // metavliti p, opou einai o arithos tou user kathos
-        printf("Year: ");                                                       // kai to member sinolika_taksidia pou einai o arithmos
-        scanf("%d", &client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.yyyy);//ton taksidion pou exei kanei o kathe pelatis
+        scanf("%d", &client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.dd); // assign the date typed
+        printf("Month: ");                                                      // by the user into the departure date struct, based on
+        scanf("%d", &client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.mm); // variable p, the user's number, as well as
+        printf("Year: ");                                                       // the member sinolika_taksidia, which is the number
+        scanf("%d", &client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.yyyy);// of trips each client has made
 
-        //ELEGXOS OI HMEROMHNIES NA MHN SIMPIPTOUN
+        // CHECK THAT THE DATES DO NOT COINCIDE
         if (sygkekrimeno_taksidi > 0){
-            flag1 = compare_trips(p, sygkekrimeno_taksidi); //kaleitai i sinartisi compare_trips() me orismata ton arithmo pelati (p) kai 
-        }                                                   //to sygkekrimeno taksidi pou kanei o pelatis (=client_trip[p].sinolika_taksidia)
+            flag1 = compare_trips(p, sygkekrimeno_taksidi); // compare_trips() is called with arguments the client number (p) and
+        }                                                   // the specific trip the client is booking (=client_trip[p].sinolika_taksidia)
         else
-            break;//ginetai kratisi tou protou taksidiou to user, ara den xreiazetai na sygkrithoun oi imerominies
+            break;// this is the user's first trip booking, so there is no need to compare dates
 
         if (flag1 == 1)
             break;
@@ -534,13 +533,13 @@ void book_trip(int p){
     printf("\nSelect your destination (e.g. RHO): ");
     scanf("%s", answer);
 
-    int proorismos, flag = 0; // to flag episimanei an yparxei to limani i oxi
+    int proorismos, flag = 0; // flag indicates whether the port exists or not
     while(1) {
 
         for (int i = 0; i < 13; i++) {
-            if (strcmp(route[i].port_code, answer) == 0){ //elegxos oti o proorismos pou eisigage einai sostos
+            if (strcmp(route[i].port_code, answer) == 0){ // check that the entered destination is valid
                 flag = 1;
-                proorismos = i; // apothikefsi tou proorismou
+                proorismos = i; // store the destination
                 break;
             }
         }
@@ -566,7 +565,7 @@ void book_trip(int p){
     scanf("%s", seat_type);
     double arxiko_kostos;
 
-    while(1){ //elegxos orthis eisagogis - epilogi tipou thesis
+    while(1){ // check for correct input - seat type selection
         if (strcmp(seat_type, "1") == 0){
             arxiko_kostos = route[proorismos].deck_price;
             break;
@@ -591,7 +590,7 @@ void book_trip(int p){
     printf("\nDo you want to include your vehicle in your trip? (yes/no): ");
     char answer_vehicle[3];
     scanf("%s", answer_vehicle);
-    while(1) { // elegxos apantisis kai epeita ekxorisi tis katallilis timis sto flag: 0/1
+    while(1) { // check the answer and then assign the appropriate value to the flag: 0/1
         if (strcmp(answer_vehicle, "yes") == 0){
             vehicle_flag = 1;
             break;
@@ -613,15 +612,15 @@ void book_trip(int p){
     char return_answer[3];
     scanf("%s", return_answer);
     while(1){
-        if (strcmp(return_answer, "yes") == 0){ //elegxos orthis eisagogis
+        if (strcmp(return_answer, "yes") == 0){ // check for correct input
             return_flag = 1;
-            printf("Please choose the return date: (dd/mm/yyyy): \n");// dedomenou oti o hristis tha valei sosti imerominia
+            printf("Please choose the return date: (dd/mm/yyyy): \n");// given that the user will enter a valid date
             printf("Day: ");
-            scanf("%d", &client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.dd);  // ekhorisi tis imeromminias pou pliktrologise
-            printf("Month: ");                                                                   // o hristis sti domi arrival date, me vasi tin
-            scanf("%d", &client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.mm);  // metavliti p, opou einai o arithos tou user kathos
-            printf("Year: ");                                                                    // kai to member sinolika_taksidia pou einai o arithmos
-            scanf("%d", &client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.yyyy);//ton taksidion pou exei kanei o kathe pelatis
+            scanf("%d", &client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.dd);  // assign the date typed
+            printf("Month: ");                                                                   // by the user into the return date struct, based on
+            scanf("%d", &client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.mm);  // variable p, the user's number, as well as
+            printf("Year: ");                                                                    // the member sinolika_taksidia, which is the number
+            scanf("%d", &client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.yyyy);// of trips each client has made
             break;
         }
         else if (strcmp(return_answer, "no") == 0)
@@ -633,13 +632,13 @@ void book_trip(int p){
 
     }
 
-    if (return_flag == 1) {// ekhorisi timis 0/1 sto trip_type tou sygkekrimenou taksidiou tou ekastote pelati
+    if (return_flag == 1) {// assign 0/1 to the trip_type of the client's current trip
         client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].trip_type = 1;
     }
     else
         client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].trip_type = 0;
 
-    strcpy(client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].destination, route[proorismos].port); //antigrafi string tou limaniou
+    strcpy(client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].destination, route[proorismos].port); // copy the port string
 
     double return_kostos, synoliko_kostos;
 
@@ -650,17 +649,17 @@ void book_trip(int p){
 
     synoliko_kostos = arxiko_kostos + return_kostos;
 
-    //an o user einai foititis, efarmozetai i ekptosi
+    // if the user is a student, apply the discount
     if (user[p].uni_student == 1)
         synoliko_kostos = synoliko_kostos/2;
 
-    //ekhorisi tou sinolikou posou sto sygkekrimeno taksidi tou user
+    // assign the total amount to the user's current trip
     client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].total_cost = synoliko_kostos;
 
-    //arxikopoihsh katastasi kratisis os ekremmhs
+    // initialize the booking status as pending
     strcpy(client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].trip_status, "PENDING");
 
-    //kaleitai i sinartisi generate_trip_id() gia na dimiourgithei o monadikos arithmos kratisis
+    // generate_trip_id() is called to create the unique booking number
     generate_trip_id(p);
     
     system("cls");
@@ -673,7 +672,7 @@ void book_trip(int p){
     printf("          Departure date: %02d/%02d/%d\n",  client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojD.dd,
                                                         client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojD.mm,
                                                         client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojD.yyyy);
-    if (return_flag == 1) //an yparxei diadromi epistrofis
+    if (return_flag == 1) // if a return route exists
         printf("          Return date: %02d/%02d/%d\n",  client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.dd,
                                                          client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.mm,
                                                          client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojR.yyyy);
@@ -684,20 +683,20 @@ void book_trip(int p){
     printf("*************************************************\n");
 
 
-    client_trip[p].sinolika_taksidia += 1; //afksisi tou arithmou ton taksidion tou user
+    client_trip[p].sinolika_taksidia += 1; // increase the user's trip count
     
     system("pause");
     system("cls");
 
-}//epistrofi stin user login
+}//return to user_login
 
 
 int compare_trips(int p, int sygkekrimeno_taksidi){
 
     int flag = 0;
 
-    //sygkrisi meras, mina kai etous tis trexon kratisis, me tin proigoumeni
-    if(client_trip[p].booked_trip[sygkekrimeno_taksidi - 1].dojR.dd != 0){ //an to proigoumeno taksidi eixe return 
+    // compare day, month and year of the current booking with the previous one
+    if(client_trip[p].booked_trip[sygkekrimeno_taksidi - 1].dojR.dd != 0){ // if the previous trip had a return 
 
         if (client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.dd <= client_trip[p].booked_trip[sygkekrimeno_taksidi - 1].dojR.dd){
             if (client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.mm > client_trip[p].booked_trip[sygkekrimeno_taksidi - 1].dojR.mm &&
@@ -715,7 +714,7 @@ int compare_trips(int p, int sygkekrimeno_taksidi){
 
         }
     }
-    else{ // an to proigoumeno taksidi den eexei return (einai one-way)
+    else{ // if the previous trip has no return (it's one-way)
         if (client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.dd <= client_trip[p].booked_trip[sygkekrimeno_taksidi - 1].dojD.dd){     
             if (client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.mm > client_trip[p].booked_trip[sygkekrimeno_taksidi - 1].dojD.mm &&
                 client_trip[p].booked_trip[sygkekrimeno_taksidi].dojD.yyyy >= client_trip[p].booked_trip[sygkekrimeno_taksidi - 1].dojD.yyyy){
@@ -740,13 +739,13 @@ int compare_trips(int p, int sygkekrimeno_taksidi){
         return 0;
 
 
-}//epistrofi stin book_trip
+}//return to book_trip
 
 
 void generate_trip_id(int p){
 
-    //metatropi ton int se string kai
-    //eisagogi tou 0 mprosta apo imeres kai mines <10
+    // convert the ints to strings and
+    // add a leading 0 for days and months < 10
 
     char day[3], month[3], year[5], special_char[] = "-";
 
@@ -762,15 +761,15 @@ void generate_trip_id(int p){
 
     sprintf(year, "%d", client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].dojD.yyyy); 
 
-    char anagnoristiko[30]; //prosorini metavliti
+    char anagnoristiko[30]; // temporary variable
 
-    //sygxonefsi olon ton string se 1, etsi oste na dimiourgithei to anagnoristiko kratisis
+    // merge all the strings into one, to create the booking identifier
 
     sprintf(anagnoristiko, "%s%s%s%s%s", day, month, year, special_char, user[p].username);
 
     strcpy(client_trip[p].booked_trip[client_trip[p].sinolika_taksidia].anagnoristiko, anagnoristiko);
 
-}//epistrofi sto book_trip
+}//return to book_trip
 
 
 void payment(int p){
@@ -779,15 +778,15 @@ void payment(int p){
 
     while(1){
 
-        //ekkremhs pliromes
+        // pending payments
         printf("\n****************************************\n");
         printf("*            PAYMENTS DUE              *\n");
         printf("****************************************\n\n");
 
-        int flag = 0; //to flag episimainei oti yparxoun akoma ekkremhs pliromes, ara ektiponei ta dedomena auton
+        int flag = 0; // flag indicates there are still pending payments, so their data is printed
         for(int i = 0; i < client_trip[p].sinolika_taksidia; i++){ 
 
-            if (strcmp(client_trip[p].booked_trip[i].trip_status, "PENDING") == 0){ //ektiponei ola ta taskidia pou einai se katastasi PENDING
+            if (strcmp(client_trip[p].booked_trip[i].trip_status, "PENDING") == 0){ // prints all trips that are in PENDING status
 
                 flag = 1;
             
@@ -820,18 +819,18 @@ void payment(int p){
 
 
 
-        int katohos = -2; //-2 an eisagei lathos apantisi, -1 an eisagei ID poy exei ginei confirmed. Opoiosdipote
-                          // allos arithmos simainei oti eisigage ID pou einai se katastasi PENDING
+        int katohos = -2; // -2 if a wrong answer is entered, -1 if an ID that has already been confirmed is entered. Any
+                          // other value means the entered ID is in PENDING status
         char answer[30];
         printf("\nPlease enter the unique Trip ID in order to complete your booking OR\n");
         printf("type 0 to return to USER DASHBOARD\n");
         scanf("%s", answer);
 
         if (strcmp(answer, "0") == 0){
-            break; //epistrofi sto user dashboard
+            break; // return to user dashboard
         }
 
-        int k; //metritis gia ta taksidia tou users
+        int k; // counter for the user's trips
 
 
         for (k = 0; k < client_trip[p].sinolika_taksidia; k++ ){
@@ -855,7 +854,7 @@ void payment(int p){
         else if (katohos == -1)
             printf("Please choose among the unconfirmed trips below.\n");
         else{
-            strcpy(client_trip[p].booked_trip[katohos].trip_status, "CONFIRMED"); //to taksidi ginetai 'confirmed'
+            strcpy(client_trip[p].booked_trip[katohos].trip_status, "CONFIRMED"); // the trip becomes 'confirmed'
             system("cls");
             printf("\nYour trip %s has successfully been confrimed\n", client_trip[p].booked_trip[katohos].anagnoristiko);
         }
@@ -864,7 +863,7 @@ void payment(int p){
     
     system("pause");
 
-}//epistrofi stin user_login
+}//return to user_login
 
 
 void confirmed_trips(int p){
@@ -872,14 +871,14 @@ void confirmed_trips(int p){
 	system("cls");
 	
     char answer[5];
-    if (client_trip[p].sinolika_taksidia > 1){ //an o user exei kanei touylaxiston 2 taksidia, tou dinetai i dinatotita taksinomisis me vasi tin imerominia
+    if (client_trip[p].sinolika_taksidia > 1){ // if the user has made at least 2 trips, they are given the option to sort by date
         printf("\nPlease choose how would you like to sort your confirmed bookings.\n ");
-        printf("LOW: descending order.\n"); //fthinousa seira
-        printf("HIGH: ascending order.\n"); //afksousa seira
+        printf("LOW: descending order.\n"); // descending order
+        printf("HIGH: ascending order.\n"); // ascending order
         while(1){
             printf("Place your answer: ");
             scanf("%s", answer);
-            if (strcmp(answer, "LOW") == 0 || strcmp(answer, "HIGH") == 0)//elegxos orthis eisagogis
+            if (strcmp(answer, "LOW") == 0 || strcmp(answer, "HIGH") == 0)// check for correct input
                 break;
             else
                 printf("Invalid input. please type 'HIGH' or 'LOW'.\n");
@@ -899,7 +898,7 @@ void confirmed_trips(int p){
                     printf("          Departure date: %02d/%02d/%d\n",  client_trip[p].booked_trip[i].dojD.dd,
                                                                         client_trip[p].booked_trip[i].dojD.mm,
                                                                         client_trip[p].booked_trip[i].dojD.yyyy);
-                    if (client_trip[p].booked_trip[i].dojR.dd != 0) //an yparxei return diadromi
+                    if (client_trip[p].booked_trip[i].dojR.dd != 0) // if a return route exists
                         printf("          Return date: %02d/%02d/%d\n", client_trip[p].booked_trip[i].dojR.dd,
                                                                         client_trip[p].booked_trip[i].dojR.mm,
                                                                         client_trip[p].booked_trip[i].dojR.yyyy);
@@ -926,7 +925,7 @@ void confirmed_trips(int p){
                     printf("          Departure date: %02d/%02d/%d\n",  client_trip[p].booked_trip[i].dojD.dd,
                                                                         client_trip[p].booked_trip[i].dojD.mm,
                                                                         client_trip[p].booked_trip[i].dojD.yyyy);
-                    if (client_trip[p].booked_trip[i].dojR.dd != 0) //an yparxei return diadromi
+                    if (client_trip[p].booked_trip[i].dojR.dd != 0) // if a return route exists
                         printf("          Return date: %02d/%02d/%d\n", client_trip[p].booked_trip[i].dojR.dd,
                                                                         client_trip[p].booked_trip[i].dojR.mm,
                                                                         client_trip[p].booked_trip[i].dojR.yyyy);
@@ -939,7 +938,7 @@ void confirmed_trips(int p){
             }
         }
     }
-    else{//ektiponetai i monadiki kratisi pou einai se katastasi CONFIRMED
+    else{// print the single booking that is in CONFIRMED status
 
         printf("          Destination: %s\n", client_trip[p].booked_trip[0].destination);
         printf("          Total Cost of Trip: %.2f\n", client_trip[p]. booked_trip[0].total_cost);
@@ -962,5 +961,4 @@ void confirmed_trips(int p){
     system("pause");
     system("cls");
 
-}//epistrofi stin user_login
-
+}//return to user_login
